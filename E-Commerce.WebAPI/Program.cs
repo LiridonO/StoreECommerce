@@ -1,11 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using Store.Core.Interfaces;
 using Store.Infrastructure.Data;
+using Store.Infrastructure.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var configuration = builder.Configuration;
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IProductRepository,ProductRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
