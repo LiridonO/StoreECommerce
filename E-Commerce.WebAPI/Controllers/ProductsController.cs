@@ -21,7 +21,7 @@ namespace E_Commerce.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var products = await _repo.GetProductAsync();
+            var products = await _repo.GetProductsAsync();
 
             return Ok(products);
         }
@@ -31,5 +31,18 @@ namespace E_Commerce.WebAPI.Controllers
         {
             return await _repo.GetProductByIdAsync(id);
         }
+
+        [HttpGet("brands")]
+        public async Task<ActionResult<IReadOnlyList<ProductBrand>>> GetProductBrands()
+        {
+            return Ok(await _repo.GetProductBrandAsync());
+        }
+
+        [HttpGet("types")]
+        public async Task<ActionResult<IReadOnlyList<ProductType>>> GetProductTypes()
+        {
+            return Ok(await _repo.GetProductTypeAsync());
+        }
+
     }
 }

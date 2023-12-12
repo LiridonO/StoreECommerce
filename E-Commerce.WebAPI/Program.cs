@@ -1,3 +1,4 @@
+using Azure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Store.Core.Interfaces;
 using Store.Infrastructure.Data;
@@ -29,5 +30,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+var scope = app.Services.CreateScope();
+var context= scope.ServiceProvider.GetRequiredService<StoreContext>();
+var lf = app.Services.GetRequiredService<ILoggerFactory>();
+await context.SeedAsync(lf);
 
 app.Run();
