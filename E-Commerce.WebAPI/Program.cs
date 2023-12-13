@@ -1,4 +1,5 @@
 using Azure.Identity;
+using E_Commerce.WebAPI.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Store.Core.Interfaces;
 using Store.Infrastructure.Data;
@@ -11,6 +12,7 @@ var configuration = builder.Configuration;
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository,ProductRepository>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -31,6 +33,8 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseStaticFiles();
 
 var scope = app.Services.CreateScope();
 var context= scope.ServiceProvider.GetRequiredService<StoreContext>();
