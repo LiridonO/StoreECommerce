@@ -16,6 +16,13 @@ builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(conf
 
 builder.Services.AddApplicationServices();
 builder.Services.AddSwaggerDocumentation();
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+    });
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -41,7 +48,10 @@ app.UseSwaggerDocumentation();
 
 app.MapControllers();
 
+app.UseRouting();
 app.UseStaticFiles();
+app.UseCors("CorsPolicy");
+
 
 var scope = app.Services.CreateScope();
 var context= scope.ServiceProvider.GetRequiredService<StoreContext>();
