@@ -1,36 +1,43 @@
-using Azure.Identity;
+using E_Commerce.WebAPI.Extensions;
 using E_Commerce.WebAPI.Helpers;
+using E_Commerce.WebAPI.Middleware;
 using Microsoft.EntityFrameworkCore;
-using Store.Core.Interfaces;
 using Store.Infrastructure.Data;
-using Store.Infrastructure.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var configuration = builder.Configuration;
-builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IProductRepository,ProductRepository>();
-builder.Services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
-builder.Services.AddAutoMapper(typeof(MappingProfiles));
 
+
+builder.Services.AddAutoMapper(typeof(MappingProfiles));
 builder.Services.AddControllers();
+builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddApplicationServices();
+builder.Services.AddSwaggerDocumentation();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+//if (app.Environment.IsDevelopment())
+//{
+//}
+
+app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseSwaggerDocumentation();
 
 app.MapControllers();
 
