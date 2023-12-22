@@ -1,4 +1,5 @@
 ﻿using E_Commerce.WebAPI.Errors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Store.Infrastructure.Data;
 
@@ -11,6 +12,13 @@ namespace E_Commerce.WebAPI.Controllers
         public BugsController(StoreContext storeContext)
         {
             _storeContext = storeContext;
+        }
+
+        [HttpGet("testauth")]
+        [Authorize]
+        public ActionResult<string> GetSecretText()
+        {
+            return "secret stuff";
         }
 
         [HttpGet("notfound")]

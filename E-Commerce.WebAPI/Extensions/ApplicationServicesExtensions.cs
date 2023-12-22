@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Store.Core.Interfaces;
 using Store.Infrastructure.Data.Repositories;
+using Store.Infrastructure.Services;
 
 namespace E_Commerce.WebAPI.Extensions
 {
@@ -9,6 +10,7 @@ namespace E_Commerce.WebAPI.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
 
