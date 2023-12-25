@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using E_Commerce.WebAPI.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Store.Core.Entities;
 using Store.Core.Interfaces;
@@ -10,10 +12,12 @@ namespace E_Commerce.WebAPI.Controllers
     public class BasketController : BaseApiController
     {
         private readonly IBasketRepository _basketRepository;
+        private readonly IMapper _mapper;
 
-        public BasketController(IBasketRepository basketRepository)
+        public BasketController(IBasketRepository basketRepository, IMapper mapper)
         {
             _basketRepository = basketRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -25,9 +29,11 @@ namespace E_Commerce.WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasket basket)
+        public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDto basket)
         {
-            var updatedBasket = await _basketRepository.UpdateBasketAsync(basket);
+            var customerBasket = _mapper.Map<CustomerBasketDto, CustomerBasket>(basket);
+
+            var updatedBasket = await _basketRepository.UpdateBasketAsync(customerBasket);
 
             return Ok(updatedBasket);
         }
