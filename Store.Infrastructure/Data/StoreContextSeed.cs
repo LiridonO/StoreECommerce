@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Store.Core.Entities;
+using Store.Core.OrderAggregate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +56,21 @@ namespace Store.Infrastructure.Data
                     {
                         item.Id = 0;
                         context.Products.Add(item);
+                    }
+
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.DeliveryMethods.Any())
+                {
+                    var dmData = File.ReadAllText("../Store.Infrastructure/Data/SeedData/delivery.json");
+
+                    var methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(dmData);
+
+                    foreach (var item in methods)
+                    {
+                        item.Id = 0;
+                        context.DeliveryMethods.Add(item);
                     }
 
                     await context.SaveChangesAsync();

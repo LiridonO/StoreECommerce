@@ -1,0 +1,26 @@
+﻿using AutoMapper;
+using E_Commerce.WebAPI.DTOs;
+using Store.Core.OrderAggregate;
+
+namespace E_Commerce.WebAPI.Helpers
+{
+    public class OrderItemUrlResolver : IValueResolver<OrderItem, OrderItemDto, string>
+    {
+        private readonly IConfiguration _config;
+
+        public OrderItemUrlResolver(IConfiguration config)
+        {
+            _config = config;
+        }
+
+        public string Resolve(OrderItem source, OrderItemDto destination, string destMember, ResolutionContext context)
+        {
+            if (!string.IsNullOrEmpty(source.ItemOrdered.PictureUrl))
+            {
+                return _config["ApiUrl"] + source.ItemOrdered.PictureUrl;
+            }
+
+            return null;
+        }
+    }
+}

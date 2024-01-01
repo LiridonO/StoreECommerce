@@ -1,6 +1,7 @@
 ﻿using E_Commerce.WebAPI.Errors;
 using Microsoft.AspNetCore.Mvc;
 using Store.Core.Interfaces;
+using Store.Infrastructure.Data;
 using Store.Infrastructure.Data.Repositories;
 using Store.Infrastructure.Services;
 
@@ -11,8 +12,10 @@ namespace E_Commerce.WebAPI.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
 
