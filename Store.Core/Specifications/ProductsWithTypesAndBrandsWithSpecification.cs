@@ -19,8 +19,6 @@ namespace Store.Core.Specifications
         {
             AddInclude(x => x.ProductType);
             AddInclude(x => x.ProductBrand);
-            AddOrderBy(x => x.Name);
-            ApplyPaging(productParams.PageSize * (productParams.PageIndex -1), productParams.PageSize);
 
             if (!string.IsNullOrEmpty(productParams.Sort))
             {
@@ -37,6 +35,7 @@ namespace Store.Core.Specifications
                         break;
                 }
             }
+            ApplyPaging(productParams.PageSize * (productParams.PageIndex - 1), productParams.PageSize);
         }
 
         public ProductsWithTypesAndBrandsWithSpecification(int id) 

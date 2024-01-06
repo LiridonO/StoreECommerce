@@ -28,7 +28,7 @@ namespace Store.Infrastructure
 
             if (spec.OrderByDescending != null)
             {
-                query = query.OrderBy(spec.OrderByDescending);
+                query = query.OrderByDescending(spec.OrderByDescending);
             }
 
             if (spec.IsPagingEnabled)
