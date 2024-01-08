@@ -85,7 +85,7 @@ namespace E_Commerce.WebAPI.Controllers
 
             var result = await _signInManager.CheckPasswordSignInAsync(user,loginDto.Password,false);
 
-            if (!result.Succeeded) return Unauthorized(new ApiResponse(401));
+            if (!result.Succeeded) return Unauthorized("Your email or password is incorrect");
 
             return new UserDto
             {
